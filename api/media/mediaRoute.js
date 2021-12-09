@@ -1,8 +1,14 @@
 const router = require("express").Router();
-const { uploadImage } = require("../../helper/imageUpload");
+const { uploadImage } = require("../../middleware/imageUpload");
+const { uploadImageCloud } = require("../../helper/imageUploadHelper");
 
-router.post("/", uploadImage.single("image"), (req, res) => {
-  const imageUrl = req.file.location;
+router.post("/", uploadImage, async (req, res) => {
+
+  let imageUrl = "";
+  if (req.file) {
+    imageUrl = await uploadImageCloud(req.file);
+    console.log("done");
+  }
   res.json({ success: true, url: imageUrl });
 });
 

@@ -1,9 +1,10 @@
 const News = require("./newsModel");
 const Category = require("../category/categoryModel");
+const { uploadImageCloud } = require("../../helper/imageUploadHelper");
+
 
 exports.getNews = async (req, res) => {
   const newsId = req.params.id;
-
   try {
     const news = await News.findById(newsId)
       .populate("category", "_id title")
@@ -77,7 +78,7 @@ exports.addNews = async (req, res) => {
   });
 
   if (req.file) {
-    newNews.imageUrl = req.file.location;
+    newNews.imageUrl = await uploadImageCloud(req.file);
   }
 
   try {
@@ -88,12 +89,12 @@ exports.addNews = async (req, res) => {
   }
 };
 
-exports.updateNews = (req, res) => {
+exports.updateNews = async (req, res) => {
   const newsId = req.params.id;
   const updatedNews = req.body;
 
   if (req.file) {
-    updatedNews.imageUrl = req.file.location;
+    updatedNews.imageUrl = await uploadImageCloud(req.file);
   }
 
   News.findByIdAndUpdate(

@@ -1,8 +1,13 @@
 const Category = require("./categoryModel");
+const { uploadImageCloud } = require("../../helper/imageUploadHelper");
 
 exports.addCategory = async (req, res) => {
   const reqBody = req.body;
   const newCategory = new Category(reqBody);
+
+  if (req.file) {
+    newCategory.imageUrl = await uploadImageCloud(req.file);
+  }
 
   try {
     const addedCategory = await newCategory.save();
@@ -14,11 +19,11 @@ exports.addCategory = async (req, res) => {
 
 exports.updateCategory = async (req, res) => {
   const reqBody = req.body;
-  const newCategory = { title: req.body.title };
+  const newCategory = { title: reqBody.title };
   const categoryId = req.params.id;
 
   if (req.file) {
-    newCategory.imageUrl = req.file.location;
+    newCategory.imageUrl = await uploadImageCloud(req.file);
   }
 
   try {
@@ -68,7 +73,6 @@ exports.getCategories = async (req, res) => {
   if (req.query.isPublished) {
     queryObj = { isPublished: req.query.isPublished };
   }
-
 
   try {
     const categories = await Category.find(queryObj);

@@ -1,8 +1,13 @@
 const Advert = require("./advertModel");
+const { uploadImageCloud } = require("../../helper/imageUploadHelper");
 
 exports.addAdvert = async (req, res) => {
   const reqBody = req.body;
   const newAd = new Advert(reqBody);
+
+  if (req.file) {
+    newAd.imageUrl = await uploadImageCloud(req.file);
+  }
 
   try {
     const ad = await newAd.save();
@@ -37,7 +42,7 @@ exports.updateAd = async (req, res) => {
   updateAd.ad_url = req.body.ad_url;
 
   if (req.file) {
-    updateAd.imageUrl = req.file.location;
+    updateAd.imageUrl = await uploadImageCloud(req.file);
   }
 
   try {

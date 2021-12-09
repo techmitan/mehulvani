@@ -2,6 +2,7 @@ const User = require("./userModel");
 const bcrypt = require("bcrypt");
 const saltRounds = 10;
 const jwt = require("jsonwebtoken");
+const { uploadImageCloud } = require("../../helper/imageUploadHelper");
 
 exports.registerUser = async (req, res) => {
   const newUser = new User({
@@ -106,7 +107,7 @@ exports.updateUser = async (req, res) => {
   let userData = { full_name, email };
 
   if (req.file) {
-    userData.profileImageUrl = req.file.location;
+    userData.profileImageUrl = await uploadImageCloud(req.file);
   }
 
   try {
