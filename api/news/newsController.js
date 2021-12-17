@@ -156,7 +156,7 @@ exports.getHomeNews = async (req, res) => {
         isPublished: true,
       }).sort({ published_date: -1 });
       if (item.length !== 0) {
-        news.push({ category: categories[category], news: item.slice(0, 3) });
+        news.push({ category: categories[category], news: item.slice(0, 6) });
       }
     }
     res.json({ news });
