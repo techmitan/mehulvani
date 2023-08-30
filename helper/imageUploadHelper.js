@@ -1,11 +1,12 @@
 const sharp = require("sharp");
 const cloudinary = require("cloudinary").v2;
 const { Readable } = require("stream");
+const Configs = require("../configs")
 
 cloudinary.config({
-  cloud_name: process.env.CLOUDINARY_NAME,
-  api_key: process.env.CLOUDINARY_KEY,
-  api_secret: process.env.CLOUDINARY_SECRET,
+  cloud_name: Configs.CLOUDINARY_NAME,
+  api_key: Configs.CLOUDINARY_KEY,
+  api_secret: Configs.CLOUDINARY_SECRET,
   secure: true
 });
 

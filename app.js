@@ -4,13 +4,14 @@ const cors = require("cors");
 const mongoose = require("mongoose");
 require("dotenv").config();
 const path = require("path");
+const Configs = require("./configs");
 
 app.use(cors());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
 mongoose
-  .connect(process.env.DB_CONFIG, {
+  .connect(Configs.DATABASE_URL, {
     useNewUrlParser: true,
     useUnifiedTopology: true,
   })
